@@ -1,14 +1,19 @@
 pipeline {
-        agent none
-        stages {
-         
-          stage("build & SonarQube Scanner") {
-            agent any
+    agent any
+
+    stages {
+        stage("Build & SonarQube Scanner") {
             steps {
-              withSonarQubeEnv('SonarCloud') {
-                bat 'mvn clean package sonar:sonar'
-              }
+                script {
+                    withSonarQubeEnv('SonarCloud') {
+                        // Navigate to the project directory
+                        dir('jenkins/POV-JAVA') {
+                            // Run Maven commands
+                            bat 'mvn clean package sonar:sonar'
+                        }
+                    }
+                }
             }
-          }
         }
-      } 
+    }
+}
